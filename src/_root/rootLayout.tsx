@@ -1,11 +1,11 @@
-import {Outlet} from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+
 const RootLayout = () => {
   return (
     <>
-    <p>Top bar.</p>
-    <p>Left bar</p>
-    <Outlet/>
-    
+      <p>Top bar.</p>
+      <p>Left bar</p>
+      <Outlet />
     </>
   )
 }
