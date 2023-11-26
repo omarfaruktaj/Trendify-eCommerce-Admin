@@ -1,59 +1,54 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { useState } from 'react'
 
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { EyeIcon, EyeOff } from 'lucide-react'
-import { useLoginMutation } from '../authApi'
+import { useResetPasswordMutation } from '../authApi'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch } from '@/store/hooks'
 import { authenticate } from '../authSlice'
-import { toast as hotToast } from 'react-hot-toast'
-import { useToast } from '@/components/ui/use-toast'
-import { useNavigate } from 'react-router-dom'
-
+import { useState } from 'react'
+import { EyeIcon, EyeOff } from 'lucide-react'
+import toast from 'react-hot-toast'
 const formSchema = z.object({
-  email: z.string().email('Invalid email. Please enter a valid email.'),
   password: z
     .string()
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$&*]).{8,}/,
-      'Invalid password, Please enter a valid password.'
+      'Password must be at least 8 characters with at least 1 lowercase, 1 uppercase, 1 digit, and 1 special character.'
     ),
 })
-
-const LoginForm = () => {
+const ResetPasswordFrom = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
-
+  const [resetPassword, { isLoading, error }] = useResetPasswordMutation()
+  const { token } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-
-  const [login, { isLoading }] = useLoginMutation()
-
-  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
       password: '',
     },
   })
-
+  if (!token) return
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     try {
-      const result = await login(value).unwrap()
+      const result = await resetPassword({
+        password: value.password,
+        token,
+      }).unwrap()
+      console.log(result)
 
-      navigate('/')
       dispatch(
         authenticate({
           user: result.user,
@@ -61,18 +56,13 @@ const LoginForm = () => {
           refreshToken: result.refreshToken,
         })
       )
-      console.log(result.accessToken, result.refreshToken)
+
       localStorage.setItem('accessToken', result.accessToken)
       localStorage.setItem('refreshToken', result.refreshToken)
-      form.reset()
-      hotToast.success('Successfully login.')
+      navigate('/')
     } catch (error) {
-      console.log(error)
-      form.reset()
-      toast({
-        title: 'Error when login.',
-        description: 'Please try again',
-      })
+      toast.error(error.message)
+      navigate('/auth/login')
     }
   }
 
@@ -80,38 +70,21 @@ const LoginForm = () => {
     <div>
       <Form {...form}>
         <form
+          className='space-y-6'
           onSubmit={form.handleSubmit(onSubmit)}
-          className='space-y-8'
         >
           <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email:</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isLoading}
-                    placeholder='Enter your email.'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          ></FormField>
-          <FormField
-            control={form.control}
             name='password'
+            control={form.control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password:</FormLabel>
+                <FormLabel>Password</FormLabel>
                 <div className='relative'>
                   <FormControl>
                     <Input
                       disabled={isLoading}
                       type={isShowPassword ? 'text' : 'password'}
-                      placeholder='Enter your password.'
+                      placeholder='Enter a new password.'
                       {...field}
                     />
                   </FormControl>
@@ -136,14 +109,14 @@ const LoginForm = () => {
                 <FormMessage />
               </FormItem>
             )}
-          ></FormField>
+          />
           <Button
-            disabled={isLoading}
+            className='w-full'
             type='submit'
             variant='default'
-            className='w-full'
+            disabled={isLoading}
           >
-            Login
+            Reset password
           </Button>
         </form>
       </Form>
@@ -151,4 +124,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default ResetPasswordFrom

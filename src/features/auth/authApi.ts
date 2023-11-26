@@ -19,44 +19,74 @@ const baseQuery = fetchBaseQuery({
   credentials: 'include',
 })
 
-interface LoginResponse {
+interface AuthenticationResponse {
   user: User
   accessToken: string
   refreshToken: string
 }
 
-interface refreshAccessTokenResponse {
-  user: User
-  accessToken: string
-  refreshToken: string
+interface ResetPasswordCredential {
+  password: string
+  token: string
 }
 
 export const authApi = createApi({
   baseQuery,
   reducerPath: 'authApi',
   endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginCredential>({
+    login: builder.mutation<AuthenticationResponse, LoginCredential>({
       query: ({ email, password }) => ({
         url: '/login',
         method: 'POST',
         body: { email, password },
       }),
-      transformResponse: (response: { data: LoginResponse }) => response.data,
+      transformResponse: (response: { data: AuthenticationResponse }) =>
+        response.data,
       // transformErrorResponse: (response: { status: string | number }) =>
       //   response.status,
     }),
-    refreshAccessToken: builder.mutation<refreshAccessTokenResponse, string>({
+    refreshAccessToken: builder.mutation<AuthenticationResponse, string>({
       query: (refreshToken) => ({
         url: '/refresh-token',
-        methods: 'POST',
+        method: 'POST',
         body: {
           refreshToken,
         },
       }),
-      transformResponse: (response: { data: refreshAccessTokenResponse }) =>
+      transformResponse: (response: { data: AuthenticationResponse }) =>
+        response.data,
+    }),
+    forgotPassword: builder.mutation<string, string>({
+      query: (email) => ({
+        url: 'forgot-password',
+        method: 'POST',
+        body: {
+          email,
+        },
+      }),
+      transformResponse: (response: { message: string }) => response.message,
+    }),
+
+    resetPassword: builder.mutation<
+      AuthenticationResponse,
+      ResetPasswordCredential
+    >({
+      query: ({ password, token }) => ({
+        url: `reset-password/${token}`,
+        method: 'PATCH',
+        body: {
+          password,
+        },
+      }),
+      transformResponse: (response: { data: AuthenticationResponse }) =>
         response.data,
     }),
   }),
 })
 
-export const { useLoginMutation, useRefreshAccessTokenMutation } = authApi
+export const {
+  useLoginMutation,
+  useRefreshAccessTokenMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+} = authApi

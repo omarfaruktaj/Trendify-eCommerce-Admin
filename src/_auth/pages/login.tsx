@@ -9,7 +9,7 @@ const Login = () => {
       </p>
       <LoginForm />
       <Link
-        to='/forgot-password'
+        to='/auth/forgot-password'
         className='font-semibold p-1 block mt-2 underline '
       >
         Forgot password?
