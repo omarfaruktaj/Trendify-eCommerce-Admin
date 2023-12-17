@@ -86,12 +86,12 @@ const LoginForm = () => {
           <FormField
             control={form.control}
             name='email'
+            disabled={isLoading}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email:</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={isLoading}
                     placeholder='Enter your email.'
                     {...field}
                   />
@@ -103,13 +103,13 @@ const LoginForm = () => {
           <FormField
             control={form.control}
             name='password'
+            disabled={isLoading}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password:</FormLabel>
                 <div className='relative'>
                   <FormControl>
                     <Input
-                      disabled={isLoading}
                       type={isShowPassword ? 'text' : 'password'}
                       placeholder='Enter your password.'
                       {...field}
@@ -121,15 +121,9 @@ const LoginForm = () => {
                     style={{ transform: 'translateY(-50%)' }}
                   >
                     {isShowPassword ? (
-                      <EyeOff
-                        color='gray'
-                        size='20'
-                      />
+                      <EyeOff size='20' />
                     ) : (
-                      <EyeIcon
-                        color='gray'
-                        size='20'
-                      />
+                      <EyeIcon size='20' />
                     )}
                   </div>
                 </div>

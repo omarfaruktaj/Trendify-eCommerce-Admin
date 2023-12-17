@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { useForgotPasswordMutation } from '../authApi'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const formSchema = z.object({
   email: z.string().email('Invalid email. Please enter a valid email'),
@@ -42,17 +43,19 @@ const ForgotPasswordForm = () => {
     }
   }
 
-  if (error) {
-    if ('status' in error && error.status === 400) {
-      toast.error(
-        'No user found with this email. Please enter a valid email.',
-        { duration: 4000 }
-      )
-    } else {
-      console.error('Forgot password request failed:', error)
-      toast.error('An unexpected error occurred. Please try again later.')
+  useEffect(() => {
+    if (error) {
+      if ('status' in error && error.status === 400) {
+        toast.error(
+          'No user found with this email. Please enter a valid email.',
+          { duration: 2000 }
+        )
+      } else {
+        console.error('Forgot password request failed:', error)
+        toast.error('An unexpected error occurred. Please try again later.')
+      }
     }
-  }
+  }, [error])
 
   return (
     <div>

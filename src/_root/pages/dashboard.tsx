@@ -1,5 +1,5 @@
 const Dashboard = () => {
-  return <div> Welcome to Trendify dashboard</div>
+  return <div className='h-full'>Dashboard</div>
 }
 
 export default Dashboard

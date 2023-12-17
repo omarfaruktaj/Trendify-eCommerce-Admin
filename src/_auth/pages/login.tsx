@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Login = () => {
   return (
-    <div className='p-8  bg-white rounded-lg border w-full max-w-md '>
+    <div className='p-8  bg-background text-foreground rounded-lg border w-full max-w-md '>
       <p className='text-center text-2xl font-semibold p-2'>
         Login your account.
       </p>

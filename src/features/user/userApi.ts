@@ -16,6 +16,7 @@ const baseQuery = fetchBaseQuery({
   },
   credentials: 'include',
 })
+
 interface UserResponse {
   user: User
 }

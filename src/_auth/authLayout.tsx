@@ -13,7 +13,7 @@ const AuthLayout = () => {
 
   return (
     <div>
-      <div className='h-screen flex items-center justify-center bg-gray-100'>
+      <div className='h-screen flex items-center justify-center bg-background text-foreground'>
         <Outlet />
       </div>
     </div>

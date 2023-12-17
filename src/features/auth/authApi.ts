@@ -45,17 +45,19 @@ export const authApi = createApi({
       // transformErrorResponse: (response: { status: string | number }) =>
       //   response.status,
     }),
-    refreshAccessToken: builder.mutation<AuthenticationResponse, string>({
-      query: (refreshToken) => ({
-        url: '/refresh-token',
-        method: 'POST',
-        body: {
-          refreshToken,
-        },
-      }),
-      transformResponse: (response: { data: AuthenticationResponse }) =>
-        response.data,
-    }),
+    refreshAccessToken: builder.mutation<AuthenticationResponse, string | null>(
+      {
+        query: (refreshToken) => ({
+          url: '/refresh-token',
+          method: 'POST',
+          body: {
+            refreshToken,
+          },
+        }),
+        transformResponse: (response: { data: AuthenticationResponse }) =>
+          response.data,
+      }
+    ),
     forgotPassword: builder.mutation<string, string>({
       query: (email) => ({
         url: 'forgot-password',
