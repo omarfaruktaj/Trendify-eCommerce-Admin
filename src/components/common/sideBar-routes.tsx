@@ -1,4 +1,12 @@
-import { Layout, List, ShoppingBag, Store, User } from 'lucide-react'
+import {
+  Layout,
+  List,
+  Palette,
+  ShoppingBag,
+  Store,
+  User,
+  XSquare,
+} from 'lucide-react'
 import RouteItem from './route-item'
 
 const SideBarRoutes = () => {
@@ -27,6 +35,16 @@ const SideBarRoutes = () => {
       icon: List,
       label: 'Categories',
       href: '/categories',
+    },
+    {
+      icon: Palette,
+      label: 'Colors',
+      href: '/colors',
+    },
+    {
+      icon: XSquare,
+      label: 'Sizes',
+      href: '/sizes',
     },
   ]
 

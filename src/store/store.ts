@@ -4,6 +4,8 @@ import { authApi } from '@/features/auth/authApi'
 import { userApi } from '@/features/user/userApi'
 import { productApi } from '@/features/product/productApi'
 import { categoryApi } from '@/features/category/categoryApi'
+import { colorApi } from '@/features/color/colorApi'
+import { sizeApi } from '@/features/size/sizeApi'
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -12,7 +14,9 @@ export const store = configureStore({
       authApi.middleware,
       userApi.middleware,
       productApi.middleware,
-      categoryApi.middleware
+      categoryApi.middleware,
+      colorApi.middleware,
+      sizeApi.middleware
     ),
 })
 

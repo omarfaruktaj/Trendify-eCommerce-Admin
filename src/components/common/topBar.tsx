@@ -1,9 +1,18 @@
 import { useAppSelector } from '@/store/hooks'
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar'
-import { Bell, UserCircle } from 'lucide-react'
+import { Bell, StepBack, UserCircle } from 'lucide-react'
 import { ModeToggle } from '../mode-toggle'
 import { Button } from '../ui/button'
 import MobileSideBar from './mobileSideBar'
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 const TopBar = () => {
   const user = useAppSelector((state) => state.auth.user)
@@ -22,12 +31,28 @@ const TopBar = () => {
         >
           <Bell size='25' />
         </Button>
-        <Avatar>
-          <AvatarImage src={user?.avatar?.url} />
-          <AvatarFallback>
-            <UserCircle size='25' />
-          </AvatarFallback>
-        </Avatar>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Avatar>
+              <AvatarImage src={user?.avatar?.url} />
+              <AvatarFallback>
+                <UserCircle size='25' />
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Team</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {}}>
+              <StepBack size='40' />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )

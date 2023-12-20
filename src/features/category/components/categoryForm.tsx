@@ -34,8 +34,8 @@ const formSchema = z.object({
 })
 
 const CategoryForm = ({ category }: CategoryFormProps) => {
-  const [createCategory, { isLoading, error }] = useCreateCategoryMutation()
-  const [updateCategory, { isLoading: isUpdating, error: updateError }] =
+  const [createCategory, { isLoading }] = useCreateCategoryMutation()
+  const [updateCategory, { isLoading: isUpdating }] =
     useUpdateCategoryMutation()
 
   const navigate = useNavigate()
@@ -62,32 +62,39 @@ const CategoryForm = ({ category }: CategoryFormProps) => {
           id: category._id,
         })
 
-        if (updateError && updateError.message) {
-          toast.error(updateError.message)
-        }
-
-        if (data) {
+        if (
+          'error' in data &&
+          data.error &&
+          'message' in data.error &&
+          data.error.message
+        ) {
+          toast.error(data.error.message)
+        } else {
           toast.success('Successfully updated.')
           navigate('/categories')
         }
       } catch (err) {
+        console.log(err)
         const errorWithStatus = err as { message: string }
-
         toast.error(errorWithStatus.message)
       }
     } else {
       try {
         const data = await createCategory(formData)
 
-        if (error && error.message) {
-          toast.error(error.message)
-        }
-
-        if (data) {
+        if (
+          'error' in data &&
+          data.error &&
+          'message' in data.error &&
+          data.error.message
+        ) {
+          toast.error(data.error.message)
+        } else {
           toast.success('Successfully created.')
           navigate('/categories')
         }
       } catch (err) {
+        console.log(err)
         const errorWithMessage = err as { message: string }
 
         toast.error(errorWithMessage.message)

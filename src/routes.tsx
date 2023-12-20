@@ -12,6 +12,10 @@ import ErrorBoundary from '@/errorBoundary'
 import { createBrowserRouter } from 'react-router-dom'
 import Categories from './_root/pages/categories'
 import CategoryCreateUpdate from './_root/pages/categoryCreateUpdate'
+import Colors from './_root/pages/colors'
+import CreateColor from './_root/pages/createColor'
+import Sizes from './_root/pages/sizes'
+import CreateSize from './_root/pages/createSize'
 
 const router = createBrowserRouter([
   {
@@ -32,7 +36,7 @@ const router = createBrowserRouter([
             element: <Products />,
           },
           {
-            path: '/products/create/:productId',
+            path: '/products/:productId',
             element: <ProductCreateUpdate />,
           },
           {
@@ -42,6 +46,22 @@ const router = createBrowserRouter([
           {
             path: '/categories/:categoryId',
             element: <CategoryCreateUpdate />,
+          },
+          {
+            path: '/colors',
+            element: <Colors />,
+          },
+          {
+            path: '/colors/create',
+            element: <CreateColor />,
+          },
+          {
+            path: '/sizes',
+            element: <Sizes />,
+          },
+          {
+            path: '/sizes/create',
+            element: <CreateSize />,
           },
         ],
       },
